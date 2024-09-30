@@ -6,6 +6,7 @@ import android.opengl.Matrix
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
+
 //this is an interface that we have to implement and then set it to GLSurfaceView
 //by GLSurfaceView.setRenderer()
 
@@ -134,4 +135,5 @@ class ObjectRender: GLSurfaceView.Renderer {
         // in the onDrawFrame() method
         Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 3f, 7f)
     }
+
 }

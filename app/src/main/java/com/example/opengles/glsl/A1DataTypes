@@ -1,0 +1,67 @@
+//Data types
+
+Scalars:
+1. bool
+2. int
+3. uint
+4. float (single precision)
+5. double (double precision)
+
+
+Vectors:
+1. bvecn -> vector of boolean
+2. ivecn -> int vector
+3. uvecn -> unsigned int vector
+4. vecn -> floating point vector
+5. dvecn -> double vector
+
+n represents the dimension. eg. vec3 is a 3d vector of floating point. n can only be 2,3,4
+
+Matrix:(all matrix are floating point in shading language
+1. matnxm -> a matrix with n rows and m columns
+2. matn -> a n x n matrix
+
+Arrays:
+1. uniform float floatArray[3]; //a floating point array of size 3
+2. uniform vec3 vec3array[3][4] ; a 3 x 4 array with each element a 3D float vector
+
+Structure:
+
+struct StructX{
+    vec3 var1 ;
+    bool var2 ;
+    float var3 ;
+} X; // a struct X with following variables.
+
+
+we have to define the qualifier for each variable and these qualifiers defines how the variable values can be passed
+between the application program and shaders,
+1. uniform -> it means that the variable can be set by application program, it works like a global variable and it can be used
+across the shaders
+2. attribute -> global read only variable and that can be used in vertex shader only eg. vPosition
+3. varying -> used to transfer values from one shader to another(both should use varying keyword
+
+precision mediump float; // sets the default precision of float to medium
+precision lowp int ; //sets the default precision of int to low
+we can use precision to set the variable to low, high or medium, default is high and low is the fastest
+highp, mediump, lowp
+eg. attribute lowp vec4 colorAttribute ;
+
+A description of the different variable qualifiers is as follows (Source:
+https://www.lighthouse3d.com/tutorials/glsl-12-tutorial/data-types-and-variables/
+). Please refere to the weblink and other online resources for more details.
+
+Variable Qualifiers
+
+Qualifiers give a special meaning to the variable. The following qualifiers are available:
+
+const – The declaration is of a compile time constant.
+
+attribute – Global variables that may change per vertex, that are passed from the OpenGL application to vertex shaders. This qualifier can only be used in vertex shaders. For the shader this is a read-only variable. See Attribute section.
+
+uniform – Global variables that may change per primitive [...], that are passed from the OpenGL application to the shaders. This qualifier can be used in both vertex and fragment shaders. For the shaders this is a read-only variable. See Uniform section.
+
+varying – used for interpolated data between a vertex shader and a fragment shader. Available for writing in the vertex shader, and read-only in a fragment shader. See Varying section.
+
+
+

@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">OpenGL ES</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="reset">reset</string>
+    <string name="c">C</string>
+    <string name="x">x</string>
+    <string name="equals">=</string>
+    <string name="plus">+</string>
+    <string name="_0">0</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="minus">-</string>
+    <string name="divide">/</string>
+    <string name="inputString">%s %s %s</string>
+    <string name="result">%s %s %s = %s</string>
+    <string name="have_you_ever_been_to_school">Have you ever been to school?</string>
+    <string name="system_hil_gya">System Hil Gya</string>
+    <string name="why_would_you_do_that">Why would you do that to me?</string>
+    <string name="please_uninstall_me">please! uninstall me</string>
 </resources>
