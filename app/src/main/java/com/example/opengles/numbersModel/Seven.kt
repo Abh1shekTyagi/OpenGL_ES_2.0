@@ -1,8 +1,9 @@
-package com.example.opengles
+package com.example.opengles.numbersModel
 
 import android.content.Context
 import android.opengl.GLES20
 import android.opengl.GLES32
+import com.example.opengles.MyRenderer
 import com.example.opengles.Utils.Companion.loadShader
 import com.example.opengles.objloader.ObjLoader
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +14,7 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class CharacterA(val context: Context) {
+class Seven (val context: Context) {
     private val mProgram: Int
     private val mPositionHandle: Int
     private val mMVPMatrixHandle: Int
@@ -109,12 +110,14 @@ class CharacterA(val context: Context) {
         GLES32.glEnableVertexAttribArray(mColorHandle)
         mPointLightLocationHandle = GLES32.glGetUniformLocation(mProgram, "uPointLightingLocation")
         MyRenderer.checkGlError("glGetUniformLocation")
-        CoroutineScope(Dispatchers.IO).launch {
-            val obj = ObjLoader(context,"number0.obj" )
+        CoroutineScope(Dispatchers.IO).launch{
+            val obj by lazy{
+                ObjLoader(context, "number7.obj")
+            }
             charAVertex = obj.vertexArray
             charAColor = obj.textureCoordinates
             charAIndices = obj.indexArray.toTypedArray()
-            cubeBuffer =  ByteBuffer.allocateDirect(obj.vertexArray.size * 4).run {
+            cubeBuffer = ByteBuffer.allocateDirect(obj.vertexArray.size * 4).run {
                 // use the device hardware's native byte order
                 order(ByteOrder.nativeOrder())
                 // create a floating point buffer from the ByteBuffer
@@ -136,12 +139,11 @@ class CharacterA(val context: Context) {
                     position(0)
                 }
             }
-            indexBuffer =  IntBuffer.allocate(obj.indexArray.size).apply {
+            indexBuffer = IntBuffer.allocate(obj.indexArray.size).apply {
                 put(obj.indexArray)
                 position(0)
             }
         }
-
     }
 
     fun draw(mvpMatrix: FloatArray?) {
@@ -161,7 +163,7 @@ class CharacterA(val context: Context) {
 //        GLES32.glDrawArrays(GLES32.GL_TRIANGLES, 0, vertexStride)
         //draw the cube
         GLES32.glDrawElements(
-            GLES32.GL_TRIANGLES,
+            GLES32.GL_POINTS,
             charAIndices.size,
             GLES32.GL_UNSIGNED_INT,
             indexBuffer
@@ -240,4 +242,5 @@ class CharacterA(val context: Context) {
             0.0f, 1.0f, 0.0f, 1.0f
         )
     }
+
 }

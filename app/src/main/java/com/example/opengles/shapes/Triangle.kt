@@ -1,4 +1,4 @@
-package com.example.opengles
+package com.example.opengles.shapes
 
 import android.opengl.GLES20
 import com.example.opengles.Utils.Companion.loadShader

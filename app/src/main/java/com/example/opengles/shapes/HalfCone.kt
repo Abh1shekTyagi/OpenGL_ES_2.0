@@ -1,6 +1,7 @@
-package com.example.opengles
+package com.example.opengles.shapes
 
 import android.opengl.GLES32
+import com.example.opengles.MyRenderer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer

@@ -1,8 +1,9 @@
-package com.example.opengles
+package com.example.opengles.numbersModel
 
 import android.content.Context
 import android.opengl.GLES20
 import android.opengl.GLES32
+import com.example.opengles.MyRenderer
 import com.example.opengles.Utils.Companion.loadShader
 import com.example.opengles.objloader.ObjLoader
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +14,7 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class One(val context: Context) {
+class Nine(val context: Context) {
     private val mProgram: Int
     private val mPositionHandle: Int
     private val mMVPMatrixHandle: Int
@@ -109,43 +110,38 @@ class One(val context: Context) {
         GLES32.glEnableVertexAttribArray(mColorHandle)
         mPointLightLocationHandle = GLES32.glGetUniformLocation(mProgram, "uPointLightingLocation")
         MyRenderer.checkGlError("glGetUniformLocation")
-        CoroutineScope(Dispatchers.IO).launch {
-            val obj = ObjLoader(context, "number1.obj")
+        CoroutineScope(Dispatchers.IO).launch{
+            val obj by lazy{
+                ObjLoader(context, "number9.obj")
+            }
             charAVertex = obj.vertexArray
             charAColor = obj.textureCoordinates
             charAIndices = obj.indexArray.toTypedArray()
-            launch {
-                cubeBuffer = ByteBuffer.allocateDirect(obj.vertexArray.size * 4).run {
-                    // use the device hardware's native byte order
-                    order(ByteOrder.nativeOrder())
-                    // create a floating point buffer from the ByteBuffer
-                    asFloatBuffer().apply {
-                        // add the coordinates to the FloatBuffer
-                        put(obj.vertexArray)
-                        // set the buffer to read the first coordinate
-                        position(0)
-                    }
-                }    // initialize vertex byte buff }
-                launch {
-                    cubeColorBuffer =
-                        ByteBuffer.allocateDirect(obj.textureCoordinates.size * 4).run {
-                            // use the device hardware's native byte order
-                            order(ByteOrder.nativeOrder())
-                            // create a floating point buffer from the ByteBuffer
-                            asFloatBuffer().apply {
-                                // add the coordinates to the FloatBuffer
-                                put(obj.textureCoordinates)
-                                // set the buffer to read the first coordinate
-                                position(0)
-                            }
-                        }
+            cubeBuffer = ByteBuffer.allocateDirect(obj.vertexArray.size * 4).run {
+                // use the device hardware's native byte order
+                order(ByteOrder.nativeOrder())
+                // create a floating point buffer from the ByteBuffer
+                asFloatBuffer().apply {
+                    // add the coordinates to the FloatBuffer
+                    put(obj.vertexArray)
+                    // set the buffer to read the first coordinate
+                    position(0)
                 }
-                launch {
-                    indexBuffer = IntBuffer.allocate(obj.indexArray.size).apply {
-                        put(obj.indexArray)
-                        position(0)
-                    }
+            }    // initialize vertex byte buff
+            cubeColorBuffer = ByteBuffer.allocateDirect(obj.textureCoordinates.size * 4).run {
+                // use the device hardware's native byte order
+                order(ByteOrder.nativeOrder())
+                // create a floating point buffer from the ByteBuffer
+                asFloatBuffer().apply {
+                    // add the coordinates to the FloatBuffer
+                    put(obj.textureCoordinates)
+                    // set the buffer to read the first coordinate
+                    position(0)
                 }
+            }
+            indexBuffer = IntBuffer.allocate(obj.indexArray.size).apply {
+                put(obj.indexArray)
+                position(0)
             }
         }
     }
@@ -153,7 +149,7 @@ class One(val context: Context) {
     fun draw(mvpMatrix: FloatArray?) {
         // Apply the projection and view transformation
         GLES32.glUniform3fv(mPointLightLocationHandle, 1, lightLocation, 0)
-        GLES32.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix?.copyOf(), 0)
+        GLES32.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0)
         MyRenderer.checkGlError("glUniformMatrix4fv")
         //set the attribute of the vertex to point to the vertex buffer
         GLES32.glVertexAttribPointer(
@@ -246,4 +242,5 @@ class One(val context: Context) {
             0.0f, 1.0f, 0.0f, 1.0f
         )
     }
+
 }

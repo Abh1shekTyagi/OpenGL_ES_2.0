@@ -5,6 +5,24 @@ import android.opengl.GLES32
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import android.util.Log
+import com.example.opengles.numbersModel.Eight
+import com.example.opengles.numbersModel.Five
+import com.example.opengles.numbersModel.Four
+import com.example.opengles.numbersModel.Nine
+import com.example.opengles.numbersModel.One
+import com.example.opengles.numbersModel.Seven
+import com.example.opengles.numbersModel.Six
+import com.example.opengles.numbersModel.Three
+import com.example.opengles.numbersModel.Two
+import com.example.opengles.numbersModel.Zero
+import com.example.opengles.shapes.ArbitraryShape
+import com.example.opengles.shapes.CharacterA
+import com.example.opengles.shapes.CharacterS
+import com.example.opengles.shapes.Cube
+import com.example.opengles.shapes.HalfCone
+import com.example.opengles.shapes.PhongSphere
+import com.example.opengles.shapes.Pyramid
+import com.example.opengles.shapes.Sphere
 import java.io.InputStream
 import javax.microedition.khronos.opengles.GL10
 
@@ -204,7 +222,8 @@ class MyRenderer(val contextParam: Context) : GLSurfaceView.Renderer {
     }
 
     fun remove() {
-        numberList.removeLast()
+        if (numberList.isNotEmpty())
+            numberList.removeLast()
         angleY = 0f
     }
 

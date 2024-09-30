@@ -1,4 +1,4 @@
-package com.example.opengles
+package com.example.opengles.shapes
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -8,10 +8,10 @@ import java.nio.ShortBuffer
 // number of coordinates per vertex in this array
 
 var squareCoordinates = floatArrayOf(
-    -0.5f,  0.5f, 0.0f,      // top left
+    -0.5f, 0.5f, 0.0f,      // top left
     -0.5f, -0.5f, 0.0f,      // bottom left
     0.5f, -0.5f, 0.0f,      // bottom right
-    0.5f,  0.5f, 0.0f       // top right
+    0.5f, 0.5f, 0.0f       // top right
 )
 
 class Square {

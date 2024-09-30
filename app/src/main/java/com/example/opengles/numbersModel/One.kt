@@ -1,8 +1,9 @@
-package com.example.opengles
+package com.example.opengles.numbersModel
 
 import android.content.Context
 import android.opengl.GLES20
 import android.opengl.GLES32
+import com.example.opengles.MyRenderer
 import com.example.opengles.Utils.Companion.loadShader
 import com.example.opengles.objloader.ObjLoader
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +14,7 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class Zero(val context: Context) {
+class One(val context: Context) {
     private val mProgram: Int
     private val mPositionHandle: Int
     private val mMVPMatrixHandle: Int
@@ -44,7 +45,7 @@ class Zero(val context: Context) {
                 "}"
 
     // initialize vertex byte buffer for shape coordinates
-    var cubeBuffer: FloatBuffer = ByteBuffer.allocateDirect(charAVertex.size * 4).run {
+    private var cubeBuffer: FloatBuffer = ByteBuffer.allocateDirect(charAVertex.size * 4).run {
         // use the device hardware's native byte order
         order(ByteOrder.nativeOrder())
         // create a floating point buffer from the ByteBuffer
@@ -109,9 +110,10 @@ class Zero(val context: Context) {
         GLES32.glEnableVertexAttribArray(mColorHandle)
         mPointLightLocationHandle = GLES32.glGetUniformLocation(mProgram, "uPointLightingLocation")
         MyRenderer.checkGlError("glGetUniformLocation")
-
         CoroutineScope(Dispatchers.IO).launch {
-            val obj = ObjLoader(context, "number0.obj")
+            val obj by lazy{
+                ObjLoader(context, "number1.obj")
+            }
             charAVertex = obj.vertexArray
             charAColor = obj.textureCoordinates
             charAIndices = obj.indexArray.toTypedArray()
@@ -149,7 +151,6 @@ class Zero(val context: Context) {
                 }
             }
         }
-
     }
 
     fun draw(mvpMatrix: FloatArray?) {
@@ -248,5 +249,4 @@ class Zero(val context: Context) {
             0.0f, 1.0f, 0.0f, 1.0f
         )
     }
-
 }

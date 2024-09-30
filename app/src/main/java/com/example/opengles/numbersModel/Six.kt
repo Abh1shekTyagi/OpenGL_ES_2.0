@@ -1,8 +1,9 @@
-package com.example.opengles
+package com.example.opengles.numbersModel
 
 import android.content.Context
 import android.opengl.GLES20
 import android.opengl.GLES32
+import com.example.opengles.MyRenderer
 import com.example.opengles.Utils.Companion.loadShader
 import com.example.opengles.objloader.ObjLoader
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +14,7 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class Three(val context: Context) {
+class Six(val context: Context) {
     private val mProgram: Int
     private val mPositionHandle: Int
     private val mMVPMatrixHandle: Int
@@ -110,7 +111,9 @@ class Three(val context: Context) {
         mPointLightLocationHandle = GLES32.glGetUniformLocation(mProgram, "uPointLightingLocation")
         MyRenderer.checkGlError("glGetUniformLocation")
         CoroutineScope(Dispatchers.IO).launch {
-            val obj = ObjLoader(context, "number3.obj")
+            val obj by lazy{
+                ObjLoader(context, "number6.obj")
+            }
             charAVertex = obj.vertexArray
             charAColor = obj.textureCoordinates
             charAIndices = obj.indexArray.toTypedArray()
@@ -141,7 +144,6 @@ class Three(val context: Context) {
                 position(0)
             }
         }
-
     }
 
     fun draw(mvpMatrix: FloatArray?) {

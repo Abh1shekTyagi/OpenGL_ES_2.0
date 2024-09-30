@@ -1,14 +1,14 @@
-package com.example.opengles
+package com.example.opengles.shapes
 
 import android.opengl.GLES20
 import android.opengl.GLES32
+import com.example.opengles.MyRenderer
 import com.example.opengles.Utils.Companion.loadShader
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
-import java.nio.IntBuffer
 
-class Cube {
+class Pyramid {
 
     private val mProgram: Int
     private val mPositionHandle: Int
@@ -29,32 +29,26 @@ class Cube {
             "void main() {gl_FragColor = vColor;}"
 
     // initialize vertex byte buffer for shape coordinates
-    private val cubeBuffer: FloatBuffer = ByteBuffer.allocateDirect(cubeVertex.size * 4).run {
+    private val pyramidBuffer: FloatBuffer = ByteBuffer.allocateDirect(pyramidVertex.size * 4).run {
         // use the device hardware's native byte order
         order(ByteOrder.nativeOrder())
         // create a floating point buffer from the ByteBuffer
         asFloatBuffer().apply {
             // add the coordinates to the FloatBuffer
-            put(cubeVertex)
+            put(pyramidVertex)
             // set the buffer to read the first coordinate
             position(0)
         }
     }    // initialize vertex byte buffer for shape coordinates
 
-    private val indexBuffer : IntBuffer =
-        IntBuffer.allocate(cubeVertexIndices.size).apply {
-            put(cubeVertexIndices.toIntArray())
-            position(0)
-        }
-
-    private val cubeColorBuffer: FloatBuffer =
-        ByteBuffer.allocateDirect(cubeColor.size * 4).run {
+    private val pyramidColorBuffer: FloatBuffer =
+        ByteBuffer.allocateDirect(pyramidColor.size * 4).run {
             // use the device hardware's native byte order
             order(ByteOrder.nativeOrder())
             // create a floating point buffer from the ByteBuffer
             asFloatBuffer().apply {
                 // add the coordinates to the FloatBuffer
-                put(cubeColor)
+                put(pyramidColor)
                 // set the buffer to read the first coordinate
                 position(0)
             }
@@ -102,20 +96,13 @@ class Cube {
         //set the attribute of the vertex to point to the vertex buffer
         GLES32.glVertexAttribPointer(
             mPositionHandle, COORDS_PER_VERTEX,
-            GLES32.GL_FLOAT, false, vertexStride, cubeBuffer
+            GLES32.GL_FLOAT, false, vertexStride, pyramidBuffer
         )
         GLES32.glVertexAttribPointer(
             mColorHandle, COLOUR_PER_VERTEX,
-            GLES32.GL_FLOAT, false, colorStride, cubeColorBuffer
+            GLES32.GL_FLOAT, false, colorStride, pyramidColorBuffer
         )
-//        GLES32.glDrawArrays(GLES32.GL_TRIANGLES, 0, vertexStride)
-        //draw the cube
-        GLES32.glDrawElements(
-            GLES32.GL_TRIANGLES,
-            cubeVertexIndices.size,
-            GLES32.GL_UNSIGNED_INT,
-            indexBuffer
-        )
+        GLES32.glDrawArrays(GLES32.GL_TRIANGLES, 0, vertexStride)
     }
 
 
@@ -123,66 +110,47 @@ class Cube {
         // number of coordinates per vertex in this array
         const val COORDS_PER_VERTEX: Int = 3
         const val COLOUR_PER_VERTEX: Int = 4
-        val cubeVertex: FloatArray = floatArrayOf(
-            -1f, -1f, 1f,// Front face
+        val pyramidVertex: FloatArray = floatArrayOf(
+            // Front face
+            0f, 1f, 0f,
+            -1f, -1f, 1f,
             1f, -1f, 1f,
-            1f, 1f, 1f,
-            -1f, 1f, 1f,
-            -1f, -1f, -1f, //back face
-            -1f, 1f, -1f,
-            1f, 1f, -1f,
+
+            //right face
+            0f, 1f, 0f,
+            1f, -1f, 1f,
             1f, -1f, -1f,
-            -1f, 1f, -1f, //top face
-            -1f, 1f, 1f,
-            1f, 1f, 1f,
-            1f, 1f, -1f,
-            -1f, -1f, -1f, //bottom face
-            1f, -1f, 1f,
-            1f, -1f, 1f,
-            -1f, -1f, 1f,
-            1f, -1f, -1f,//right face
-            1f, 1f, -1f,
-            1f, 1f, 1f,
-            1f, -1f, 1f,
-            -1f, -1f, -1f,//left face
-            -1f, -1f, 1f,
-            -1f, 1f, 1f,
-            -1f, 1f, -1f,
-        )
-        val cubeVertexIndices = arrayOf(
-            0, 1, 2, 0, 2, 3,
-            4, 5, 6, 4, 6, 7,
-            8, 9, 10, 8, 10, 11,
-            12, 13, 14, 12, 14, 15,
-            16, 17, 18, 16, 18, 19,
-            20, 21, 22, 20, 22, 23
+
+            //back face
+            0f, 1f, 0f,
+            1f, -1f, -1f,
+            -1f, -1f, -1f,
+
+            //left face
+
+            0f, 1f, 0f,
+            -1f, -1f, -1f,
+            -1f, -1f, 1f
+            //bottom is not shown so we do not create it.
         )
 
-        val cubeColor = floatArrayOf(
-            -1f, -1f, 1f,// Front face
-            1f, -1f, 1f,
-            1f, 1f, 1f,
-            -1f, 1f, 1f,
-            -1f, -1f, -1f, //back face
-            -1f, 1f, -1f,
-            1f, 1f, -1f,
-            1f, -1f, -1f,
-            -1f, 1f, -1f, //top face
-            -1f, 1f, 1f,
-            1f, 1f, 1f,
-            1f, 1f, -1f,
-            -1f, -1f, -1f, //bottom face
-            1f, -1f, 1f,
-            1f, -1f, 1f,
-            -1f, -1f, 1f,
-            1f, -1f, -1f,//right face
-            1f, 1f, -1f,
-            1f, 1f, 1f,
-            1f, -1f, 1f,
-            -1f, -1f, -1f,//left face
-            -1f, -1f, 1f,
-            -1f, 1f, 1f,
-            -1f, 1f, -1f)
+        val pyramidColor = floatArrayOf(
+            //front face
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f, 1.0f,
+            //right face
+            1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 1.0f,
+            //back face
+            1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f, 1.0f,
+            //left face
+            1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 1.0f
+        )
     }
-
 }
